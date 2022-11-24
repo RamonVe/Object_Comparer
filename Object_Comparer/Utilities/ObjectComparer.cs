@@ -16,13 +16,10 @@ namespace Object_Comparer.Utilities {
             FieldInfo[] fieldInfos = object1.GetType().GetFields(BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             
             foreach (FieldInfo fieldInfo in fieldInfos) {
+                var objectFieldName = fieldInfo.Name.Replace("<", "").Replace(">k__BackingField", "");
+
                 Difference difference = new() {
-                    ObjectFieldName = typeof(T).GetProperties()
-                                           .Where(objectFieldName => fieldInfo.Name.Contains(objectFieldName.Name))
-                                           .FirstOrDefault()
-                                           .ToString()
-                                           .Split(' ')
-                                           .Last(),
+                    ObjectFieldName = objectFieldName,
                     ObjectValue1 = fieldInfo.GetValue(object1),
                     ObjectValue2 = fieldInfo.GetValue(object2)
                 };
